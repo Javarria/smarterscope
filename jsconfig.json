@@ -1,4 +1,6 @@
 {
+  // This file tells the IDEs and type checkers where to find the types for the
+  // files in the src/ directory. It's not used by the compiler.
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"]

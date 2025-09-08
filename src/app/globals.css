@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* This file defines the global CSS variables used by the Tailwind theme.
+ * It defines the colour scheme and font families.
+ * It also imports Tailwind's base styles, which are used by the rest of the app.
+ */
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

@@ -1,6 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+// This file defines the root layout for the app, which is used for both SSR and RSC.
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
