@@ -25,6 +25,11 @@ app.get("/", (req, res) => {
   res.send("Server Running");
 });
 
+app.post("/generateScopeSheet", (req, res) => {
+  console.log("Received body:")
+  res.json({ message: "You've hit the right end point" });
+})
+
 app.listen(port, () => {
   console.log("SERVER STARTED ON PORT: " + port);
 });
