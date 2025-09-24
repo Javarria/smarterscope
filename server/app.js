@@ -26,8 +26,8 @@ app.get("/", (req, res) => {
 });
 
 app.post("/generateScopeSheet", (req, res) => {
-  console.log("Received body:")
-  res.json({ message: "You've hit the right end point" });
+  console.log(req.body.address + "  <<ATTEMPT TO LOG ADDRESS")
+  res.json({ message: "You've hit the /generateScopeSheet endpoint with this address: " + req.body.address });
 })
 
 app.listen(port, () => {
