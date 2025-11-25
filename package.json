@@ -14,7 +14,9 @@
     "next": "15.5.2",
     "node": "^20.19.5",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-router-dom": "^7.9.6",
+    "three": "^0.181.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

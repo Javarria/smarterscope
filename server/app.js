@@ -26,7 +26,8 @@ app.get("/", (req, res) => {
 });
 
 app.post("/generateScopeSheet", (req, res) => {
-  console.log(req.body.address + "  <<ATTEMPT TO LOG ADDRESS")
+  //console.log(req.body.address + "  <<ATTEMPT TO LOG ADDRESS")
+  console.log("The address we are using for the LM to gather diagram is: " + req.body.address )
   res.json({ message: "You've hit the /generateScopeSheet endpoint with this address: " + req.body.address });
 })
 
