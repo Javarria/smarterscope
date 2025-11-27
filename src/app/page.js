@@ -32,7 +32,7 @@ export default function Home() {
 
   return (
 
-  <div className="w-screen min-h-screen relative border-blue-600 border-8">
+  <div className="w-screen min-h-screen relative">
     {/* Background animation */}
     <div className="absolute top-0 left-0 w-full min-h-full inset-0 z-0" style={{ pointerEvents: "none" }}>
       <ColorBends />
