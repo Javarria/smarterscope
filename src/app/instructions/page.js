@@ -3,6 +3,8 @@
  import Header from "../components/Header"
  import MainHomePageBody from "../components/MainHomePageBody"
 export default function Instructions(){
+
+    
     return(
 
         <div className="h-screen flex flex-col items-center justify-center">
