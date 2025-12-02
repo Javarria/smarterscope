@@ -1,4 +1,5 @@
 import Link from "next/link";
+import React, { useState } from "react";
 import { Montserrat } from "next/font/google";
 
 const montserrat = Montserrat({
@@ -10,6 +11,30 @@ const montserrat = Montserrat({
 // IMPLEMENTATION OF MOMO IS DONE USING > style={{fontFamily: "var(--font-momo)"}}
 
 const MainHomePageBody = () => {
+
+  const [address, setAdderess] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    console.log("We made it before the Try Catch in HandleSubmit");
+
+    try {
+      const response = await fetch("http://localhost:8080/generateScopeSheet", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ address }),
+      });
+      const data = await response.json();
+      console.log(data.message);
+    } catch (error) {
+        console.error("Error submitting address: " + error);
+    }
+  };
+  
+
   return (
     <div className="h-[90vh] w-full mt-4">
       <div className="w-full h-[35vh]  flex items-center justify-center">
@@ -28,19 +53,21 @@ const MainHomePageBody = () => {
             </Link>
         
       {/* FORM FOR SUBMITTING THE CLAIM ADDRESS */}
-      <form className="w-full h-[26vh] flex flex-col items-center justify-center ">
-
+      <form onSubmit={handleSubmit} className="w-full h-[26vh] flex flex-col items-center justify-center ">
     
         <input
+          onChange = {(e) => setAdderess(e.target.value)}
+          value={address}
           placeholder="Enter Claim address here..."
           style={{fontFamily: "var(--font-inter-bold)", color: "black", fontSize: "calc(.75rem + 0.5vw)" }}
-          className="h-[calc(2.0rem+5vw)] w-[95%] sm:w-[75%] bg-white rounded-[4rem] pl-[1.5rem] pr-1 z-1 mt-10 "
+          className="h-[calc(1.5rem+5vw)] w-[95%] sm:w-[75%] bg-white rounded-[4rem] pl-[1.5rem] pr-1 z-1 mt-10 "
         ></input>
 
-        <button className="h-[calc(2.0rem+5vw)] w-[calc(3rem+18vw)] bg-[rgba(255,255,255,0.2)] rounded-[5rem] mr-1 mt-4 ml-1 backdrop-blur-[40px] z-1 border-2 border-[rgba(255,255,255,0.2)]" style={{fontSize: "calc(1.2rem + 0.5vw)", fontFamily: "var(--font-inter-bold)"}}>
+        <button className="h-[calc(1.5rem+5vw)] w-[calc(3rem+18vw)] bg-[rgba(255,255,255,0.2)] rounded-[5rem] mr-1 mt-4 ml-1 backdrop-blur-[40px] z-1 border-2 border-[rgba(255,255,255,0.2)]" style={{fontSize: "calc(1.2rem + 0.5vw)", fontFamily: "var(--font-inter-bold)"}}>
           Submit{" "}
         </button>
       </form>
+
 
       <div className="w-full h-[25vh] p-4 flex items-center justify-center z-10">
         <div>This product was not directly developed by Seek Now LLC</div>
