@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^5.1.0",
+    "express": "^5.2.1",
     "next": "15.5.2",
     "node": "^20.19.5",
     "react": "19.1.0",

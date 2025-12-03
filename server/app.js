@@ -1,8 +1,13 @@
-const express = require("express");
+// const express = require("express");
 const app = express();
-const bodyParser = require("body-parser")
-const cors = require("cors")
+import express from "express";
+import bodyParser from "body-parser"
+import cors from "cors";
 const port = 8080;
+import scopeController from "./controllers/scopeController.js";
+
+
+// PRIMARYKEY > pP3YeszNpgkA0lmKbyOUUPR72WmweQXVqaOoMaBeipNAFUOz0HmsJQQJ99BLACYeBjFoSBy6AAAgAZMPF2Rf
 
 /////////////*************** TO RUN SERVER => node app.js *****************//////////////
 // CORS (Cross-Origin Resource Sharing) to allow requests from client-side JavaScript
@@ -25,7 +30,7 @@ app.get("/", (req, res) => {
   res.send("Server Running");
 });
 
-app.post("/generateScopeSheet", (req, res) => {
+app.post("/generateScopeSheet", scopeController.getCoordinates, (req, res) => {
   //console.log(req.body.address + "  <<ATTEMPT TO LOG ADDRESS")
   console.log("The address we are using for the LM to gather diagram is: " + req.body.address )
   res.json({ message: "You've hit the /generateScopeSheet endpoint with this address: " + req.body.address });
