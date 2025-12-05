@@ -5,8 +5,15 @@ import bodyParser from "body-parser"
 import cors from "cors";
 const port = 8080;
 import scopeController from "./controllers/scopeController.js";
+import dotenv from "dotenv"; 
+import path from "path"
+import { fileURLToPath } from "url";
 
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 // PRIMARYKEY > pP3YeszNpgkA0lmKbyOUUPR72WmweQXVqaOoMaBeipNAFUOz0HmsJQQJ99BLACYeBjFoSBy6AAAgAZMPF2Rf
 
 /////////////*************** TO RUN SERVER => node app.js *****************//////////////
@@ -19,7 +26,7 @@ import scopeController from "./controllers/scopeController.js";
 app.use(cors({
     origin: ['http://localhost:3000'], // Allow requests from localhost:3000
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
+    methods: ['GET', 'POST', 'PUT', 'DELETE'] 
 }));
 
 // Parse incoming request bodies in a middleware before your handlers, available under the req.body property
@@ -31,11 +38,19 @@ app.get("/", (req, res) => {
 });
 
 app.post("/generateScopeSheet", scopeController.getCoordinates, (req, res) => {
-  //console.log(req.body.address + "  <<ATTEMPT TO LOG ADDRESS")
-  console.log("The address we are using for the LM to gather diagram is: " + req.body.address )
+  
+  //console.log("The address we are using for the LM to gather diagram is: " + req.body.address )
   res.json({ message: "You've hit the /generateScopeSheet endpoint with this address: " + req.body.address });
+  
 })
 
 app.listen(port, () => {
   console.log("SERVER STARTED ON PORT: " + port);
 });
+
+// const key = process.env.AZURE_MAPS_PRIMARY_KEY
+// res.locals.key = key
+// //console.log(req.body.address + "  <<ATTEMPT TO LOG ADDRESS")
+// //res.locals.address = req.body.address
+// console.log(key + "<---------------------- THIS IS THE PRIMARY KEY FOR LON & LAT")
+// console.log(res.locals.key + "<---------------------- THIS IS THE PRIMARY KEY INSIDE OF RES>LOCALS")
