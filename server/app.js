@@ -4,11 +4,11 @@ import express from "express";
 import bodyParser from "body-parser"
 import cors from "cors";
 const port = 8080;
-import scopeController from "./controllers/scopeController.js";
 import dotenv from "dotenv"; 
 import path from "path"
 import { fileURLToPath } from "url";
-
+import GeoImageService from "./controllers/GeoImageService.js";
+import LLMPromptService from "./controllers/LLMPromptService.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,8 +36,8 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => {
   res.send("Server Running");
 });
-
-app.post("/generateScopeSheet", scopeController.getCoordinates, (req, res) => {
+// scopeController.captureImage,
+app.post("/generateScopeSheet", GeoImageService.getCoordinates, GeoImageService.captureImage, LLMPromptService.promptImageForSketch, (req, res) => {
   
   //console.log("The address we are using for the LM to gather diagram is: " + req.body.address )
   res.json({ message: "You've hit the /generateScopeSheet endpoint with this address: " + req.body.address });
