@@ -3,7 +3,7 @@ const LLMPromptService = () => {}
 
 LLMPromptService.promptImageForSketch = async(res,req,next) => {
     
-    console.log("!!!!!!!!!!!!!!!!!WE ARE INSIDE OF THE OTHER CONTROLLER FILE AND MIDDLEWARE FUNCTION !!!!!!!!!!!!!!!!")
+    console.log("We are inside of the promptImageSketch")
 
 }
 
