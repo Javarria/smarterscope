@@ -14,6 +14,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
 // PRIMARYKEY > pP3YeszNpgkA0lmKbyOUUPR72WmweQXVqaOoMaBeipNAFUOz0HmsJQQJ99BLACYeBjFoSBy6AAAgAZMPF2Rf
 
 /////////////*************** TO RUN SERVER => node app.js *****************//////////////
