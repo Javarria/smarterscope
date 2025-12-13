@@ -1,4 +1,3 @@
-const { data } = require("react-router-dom");
 
 
 
@@ -55,16 +54,27 @@ GeoImageService.captureImage = async(req,res,next) => {
         method : "GET"
     })
 
-    const image = await response
 
-    console.log(image)
-    console.log(res.locals.address + "We already used next() to get into the other middleware function")
+    console.log(response.body)
+    const image = await response.url
+    const imageBytes = await response.arrayBuffer();
 
+    const base64Image = Buffer.from(imageBytes).toString("base64");
+    
+    //console.log(buffer)
+    //console.log(base64Image)
+
+    //console.log(image + " THIS IS THE LINE THAT LOGS THE URL OF THE RESPONSE")
+    res.locals.base64 = base64Image
+    //console.log("THIS IS RES.LOCALS.IMAGE: " + res.locals.image)
+    //console.log(res.locals.address)
+    
     return next()
-
+    
+    // const buffer = await image.arrayBuffer();
 }
 
 
-module.exports = GeoImageService;
+export default GeoImageService;
 
 // 95 Atlas Dr, Youngsville, NC 27596
