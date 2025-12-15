@@ -12,6 +12,11 @@ export default function Instructions(){
         <div className="absolute top-0 left-0 w-full min-h-full inset-0 z-0" style={{ pointerEvents: "none" }}>
           <ColorBends />
         </div>
+
+        <svg width="500" height="320" viewBox="0 0 500 320" xmlns="http://www.w3.org/2000/svg" style="background:white">\n' +
+      <rect x="70" y="50" width="360" height="200" fill="white" stroke="black" strokeWidth="2"/>\n' +
+      <line x1="70" y1="150" x2="430" y2="150" stroke="black" strokeWidth="2"/>\n' +
+        </svg>
     
         
         {/* HEADER CONTAINER / BEGGINING OF PAGE */}

@@ -66,12 +66,40 @@ GeoImageService.captureImage = async(req,res,next) => {
 
     //console.log(image + " THIS IS THE LINE THAT LOGS THE URL OF THE RESPONSE")
     res.locals.base64 = base64Image
+    res.locals.image = image
     //console.log("THIS IS RES.LOCALS.IMAGE: " + res.locals.image)
     //console.log(res.locals.address)
     
     return next()
     
     // const buffer = await image.arrayBuffer();
+}
+
+GeoImageService.parcelBoundryLookup = async(req, res, next) => {
+
+    console.log("WE ARE INSIDE OF THE PARCELBOUNDRY LOOKUP MIDDLEWARE FUNCTION")
+
+    const key = process.env.REGRID_API_KEY
+
+    console.log(key)
+
+    //  let regridURL = `https://app.regrid.com/api/v2/parcels/point?lat=${res.locals.coordinates[0]}&lon=${res.locals.coordinates[1]}&radius=50&token=${key}`
+
+    const regridURL =
+  `https://app.regrid.com/api/v2/parcels/address` +
+  `?query=${encodeURIComponent(res.locals.address)}` +
+  `&token=${key}`;
+
+
+    const response = await fetch(regridURL, {
+        method: "GET"
+    })
+
+    const data = await response.json();
+
+    console.log(data.parcels.features[0].geometry.coordinates)
+    
+
 }
 
 
