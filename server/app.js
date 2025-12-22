@@ -37,8 +37,8 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => {
   res.send("Server Running");
 });
-// scopeController.captureImage,
-app.post("/generateScopeSheet", GeoImageService.getCoordinates, GeoImageService.captureImage, GeoImageService.parcelBoundryLookup, LLMPromptService.promptImageForSketch, (req, res) => {
+
+app.post("/generateScopeSheet", GeoImageService.getCoordinates, GeoImageService.parcelBoundryLookup, GeoImageService.captureImage, (req, res) => {
   
   //console.log("The address we are using for the LM to gather diagram is: " + req.body.address )
   res.json({ message: "You've hit the /generateScopeSheet endpoint with this address: " + req.body.address });
@@ -55,3 +55,6 @@ app.listen(port, () => {
 // //res.locals.address = req.body.address
 // console.log(key + "<---------------------- THIS IS THE PRIMARY KEY FOR LON & LAT")
 // console.log(res.locals.key + "<---------------------- THIS IS THE PRIMARY KEY INSIDE OF RES>LOCALS")
+
+
+// LLMPromptService.promptImageForSketch,
