@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# SmarterScope
 
-## Getting Started
+SmarterScope is an AI-powered application designed to help insurance adjusters **automate the roof scope sheet portion of a claim**, significantly reducing manual effort and claim cycle time.
 
-First, run the development server:
+The platform is built specifically for **insurance adjusters at SeekNow**, combining geolocation technology and AI-driven analysis to generate accurate roof scope data faster and more consistently than traditional workflows.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Problem
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Roof claims are one of the most time-consuming parts of property insurance adjusting. Adjusters often spend hours:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Manually locating properties
+- Capturing roof imagery
+- Measuring and identifying roof features
+- Building scope sheets by hand
 
-## Learn More
+This process slows down claim resolution, introduces inconsistencies, and increases operational costs.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 💡 Solution
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+SmarterScope automates the most repetitive and time-intensive parts of roof claims by:
 
-## Deploy on Vercel
+- Using **geolocation data** to identify and capture roof imagery
+- Applying **AI-driven analysis** to interpret roof structures
+- Automatically generating **roof scope data** used in insurance claims
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The result is a faster, more reliable workflow that allows adjusters to focus on decision-making instead of manual data entry.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🧠 Key Features
+
+- **Geolocation-based property lookup**
+- **Automated roof image capture**
+- **AI-assisted roof feature extraction**
+- **Automated scope sheet generation**
+- **Designed for insurance adjuster workflows**
+- **Built with SeekNow use cases in mind**
+
+---
+
+## 📈 Impact
+
+- 🚀 **Nearly 100% improvement in claim cycle time**
+- ⏱️ Reduced manual scoping effort
+- 📉 Fewer errors and inconsistencies
+- 💼 Faster claim resolution for adjusters and carriers
+
+---
+
+## 🏗️ Tech Overview
+
+- **Frontend:** Modern JavaScript framework (React / Next.js)
+- **Backend:** Node.js + API services
+- **Geolocation:** Mapping and address-based lookup services
+- **AI:** Image analysis and structured output generation
+- **Infrastructure:** Cloud-based, scalable architecture
+
+*(Exact stack details can be expanded as the project evolves.)*
+
+---
+
+## 🎯 Target Users
+
+- Insurance adjusters
+- Field inspection teams
+- Claims operations at SeekNow
+- Property insurance organizations focused on speed and accuracy
+
+---
+
+## 🛣️ Roadmap
+
+- Improve AI accuracy for complex roof geometries
+- Add adjuster-facing dashboards
+- Expand support for additional claim types
+- Integrate directly with claims management systems
+
+---
+
+## 📌 Status
+
+SmarterScope is currently under active development and evolving based on real-world insurance workflows and feedback.
+
+---
+
+## 📬 Contact
+
+Built by **Josue Chavarria**  
+If you’re interested in the product, architecture, or future collaboration, feel free to reach out.
+
