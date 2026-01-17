@@ -1,6 +1,6 @@
 const GeoImageService = () => {};
 
-//Calls function to API for coordinates = [lat, lon]
+//Calls function to API for turning address into coordinates = [lat, lon]
 GeoImageService.getCoordinates = async (req, res, next) => {
   // USING Azure: Search - Get Search Address to turn address to coordinates
   //GET https://atlas.microsoft.com/search/address/{format}?api-version=1.0&query={query}
@@ -71,6 +71,7 @@ GeoImageService.parcelBoundryLookup = async (req, res, next) => {
 
   res.locals.bbox = bbox
   console.log(bbox)
+  console.log("This is the line beneath the bbox log in parcel boundry lookup")
   //DOUBLE CHECK TO SEE IF IT WORKS WITH NEGATIVES COORDINATES
   //STILL NEED TO ERROR HANDLE FOR PARCEL BBOX LOOKUP FAILURE [ EX: 95 Atl Dr ]
   next()
@@ -81,21 +82,25 @@ GeoImageService.parcelBoundryLookup = async (req, res, next) => {
 
 GeoImageService.captureImage = async (req, res, next) => {
 
+  console.log("WE ARE INSIDE THE CAPTUREIMAGE MIDDLEWARE FUNCTION")
   console.log("THIS IS THE API KEY: " + res.locals.key);
+  //console.log("THIS IS THE BBOX: " + JSON.stringify(res.locals.bbox))
 
-  console.log("bbox: " + JSON.stringify(res.locals.bbox))
+  //Destructuring res.locals.bbox to pass it to API in acceptable STRING format.
+  const { minLon, minLat, maxLon, maxLat } = res.locals.bbox;
+  const bboxString = `${minLon},${minLat},${maxLon},${maxLat}`;
 
-  const captureURL = `https://atlas.microsoft.com/map/static?api-version=2024-04-01&center=${
-    res.locals.coordinates[1]
-  },${
-    res.locals.coordinates[0]
-  }&zoom=${19}&tilesetId=microsoft.imagery&subscription-key=${res.locals.key}`;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////***** NEXT STEP: ADD PADDING TO BBOX *****/////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//ZOOM CHANGED TO 18 
+  const captureURL = `https://atlas.microsoft.com/map/static?api-version=2024-04-01&bbox=${bboxString}&zoom=19&tilesetId=microsoft.imagery&subscription-key=${res.locals.key}`;
 
   const response = await fetch(captureURL, {
     method: "GET",
   });
 
-  console.log(response.body);
+  //console.log(response.body);
   const image = await response.url;
   const imageBytes = await response.arrayBuffer();
 
@@ -107,7 +112,10 @@ GeoImageService.captureImage = async (req, res, next) => {
   //console.log(image + " THIS IS THE LINE THAT LOGS THE URL OF THE RESPONSE")
   res.locals.base64 = base64Image;
   res.locals.image = image;
-  //console.log("THIS IS RES.LOCALS.IMAGE: " + res.locals.image)
+
+  console.log("THIS IS RES.LOCALS.IMAGE: " + res.locals.image)
+  console.log(res.locals.bbox)
+  console.log(bboxString)
   //console.log(res.locals.address)
 
   return next();
