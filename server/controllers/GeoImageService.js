@@ -32,6 +32,42 @@ GeoImageService.getCoordinates = async (req, res, next) => {
   return next();
 };
 
+GeoImageService.solarAerialImageCapture = async (req, res, next) => {
+  const key = process.env.SOLAR_API_KEY;
+  const latitude = res.locals.coordinates[0]
+  const longitude = res.locals.coordinates[1]
+  console.log("WE ARE INSIDE OF SOLAR AERIAL MIDDLEWARE")
+  console.log("WE HAVE LATITUDE HERE: " + latitude + " AND LONGITUDE HERE: " + longitude)
+
+  console.log('API SOLAR \\\\\\\ API SOLAR APIIIIIIII: ' + process.env.SOLAR_API_KEY)
+  
+  console.log('APIKEY ///////////////////////////////: ' + process.env.AZURE_MAPS_PRIMARY_KEY)
+
+  // const solarAPIURL = `https://solar.googleapis.com/v1/dataLayers:get` +
+  // `?location.latitude=${latitude}` +
+  // `&location.longitude=${longitude}` +
+  // `&radiusMeters=100` +
+  // `&view=FULL_LAYERS` +
+  // `&requiredQuality=HIGH` +
+  // `&exactQualityRequired=false` +
+  // `&pixelSizeMeters=0.5` +
+  // `&key=${key}`
+
+  const solarAPIURL = `https://solar.googleapis.com/v1/dataLayers:get?location.latitude=${latitude}&location.longitude=${longitude}&radiusMeters=100&view=FULL_LAYERS&requiredQuality=HIGH&exactQualityRequired=false&pixelSizeMeters=0.5&key=${key}`;
+
+  const response = await fetch(solarAPIURL, {
+    method: "GET",
+  });
+
+  const data = await response.json();
+
+  console.log(data)
+
+  return next()
+}
+
+//`https://atlas.microsoft.com/map/static?api-version=2024-04-01&bbox=${bboxString}&zoom=19&tilesetId=microsoft.imagery&subscription-key=${res.locals.key}`;
+
 GeoImageService.parcelBoundryLookup = async (req, res, next) => {
   console.log("WE ARE INSIDE OF THE PARCELBOUNDRY LOOKUP MIDDLEWARE FUNCTION");
 
@@ -49,7 +85,7 @@ GeoImageService.parcelBoundryLookup = async (req, res, next) => {
   });
   const data = await response.json();
 
-//IF NOTHING COMES BACK FROM THIS LOOKUP TO > data.parcels.features[0].geometry.coordinates[0] > ITS CAUSE THE PARCEL ISNT AVAILABLE TO THE REGRID API 
+//IF NOTHING COMES BACK FROM THIS LOOKUP TO > data.parcels.features[0].geometry.coordinates[0] > ITS CAUSE THE PARCEL ISNT AVAILABLE TO THE REGRID API (ADDRESS COORDINATES NOT CAPTUREABLE)
 // ERROR WILL PRINT: TypeError: Cannot read properties of undefined (reading 'geometry')
 // ARRAY CONTAINING ARRAY'S OF COORDINATES [LAT, LON]
   let nestedArrayOfCoordinates = data.parcels.features[0].geometry.coordinates[0]

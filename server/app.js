@@ -38,8 +38,10 @@ app.get("/", (req, res) => {
   res.send("Server Running");
 });
 
-app.post("/generateScopeSheet", GeoImageService.getCoordinates, GeoImageService.parcelBoundryLookup, GeoImageService.captureImage, (req, res) => {
+app.post("/generateScopeSheet", GeoImageService.getCoordinates, GeoImageService.solarAerialImageCapture, (req, res) => {
   
+
+  //OLD MIDDLEWARE FUNCTONS FOR /GENERATESCOPESHEET : GeoImageService.getCoordinates,GeoImageService.parcelBoundryLookup, GeoImageService.captureImage,
   //console.log("The address we are using for the LM to gather diagram is: " + req.body.address )
   res.json({ message: "You've hit the /generateScopeSheet endpoint with this address: " + req.body.address });
   
