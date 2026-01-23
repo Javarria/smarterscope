@@ -33,6 +33,10 @@ GeoImageService.getCoordinates = async (req, res, next) => {
 };
 
 GeoImageService.solarAerialImageCapture = async (req, res, next) => {
+  // Add THIS first in your middleware:
+
+
+
   const key = process.env.SOLAR_API_KEY;
   const latitude = res.locals.coordinates[0]
   const longitude = res.locals.coordinates[1]
@@ -53,15 +57,33 @@ GeoImageService.solarAerialImageCapture = async (req, res, next) => {
   // `&pixelSizeMeters=0.5` +
   // `&key=${key}`
 
-  const solarAPIURL = `https://solar.googleapis.com/v1/dataLayers:get?location.latitude=${latitude}&location.longitude=${longitude}&radiusMeters=100&view=FULL_LAYERS&requiredQuality=HIGH&exactQualityRequired=false&pixelSizeMeters=0.5&key=${key}`;
+  const solarAPIURL = `https://solar.googleapis.com/v1/dataLayers:get?location.latitude=${latitude}&location.longitude=${longitude}&radiusMeters=20&view=FULL_LAYERS&requiredQuality=HIGH&exactQualityRequired=false&key=${key}`;
+
+  console.log('SOLAR_API_KEY exists:', !!process.env.SOLAR_API_KEY);
+  console.log('SOLAR_API_KEY length:', process.env.SOLAR_API_KEY?.length);
+  console.log('SOLAR_API_KEY first 10 chars:', process.env.SOLAR_API_KEY?.substring(0, 10));
+  console.log('Full URL being called:', solarAPIURL);
+  console.log(res.locals.address)
+ 
 
   const response = await fetch(solarAPIURL, {
     method: "GET",
+    headers: {
+      'X-Goog-Api-Key': key
+    }
   });
 
   const data = await response.json();
 
   console.log(data)
+  const rgbUrlWithKey = `${data.rgbUrl}&key=${process.env.SOLAR_API_KEY}`;
+  const maskUrlWithKey = `${data.maskUrl}&key=${process.env.SOLAR_API_KEY}`;
+  
+
+  console.log(rgbUrlWithKey)
+  console.log(maskUrlWithKey)
+  console.log(res.locals.address)
+
 
   return next()
 }
