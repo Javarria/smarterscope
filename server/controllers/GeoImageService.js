@@ -57,7 +57,7 @@ GeoImageService.solarAerialImageCapture = async (req, res, next) => {
   // `&pixelSizeMeters=0.5` +
   // `&key=${key}`
 
-  const solarAPIURL = `https://solar.googleapis.com/v1/dataLayers:get?location.latitude=${latitude}&location.longitude=${longitude}&radiusMeters=20&view=FULL_LAYERS&requiredQuality=HIGH&exactQualityRequired=false&key=${key}`;
+  const solarAPIURL = `https://solar.googleapis.com/v1/dataLayers:get?location.latitude=${latitude}&location.longitude=${longitude}&radiusMeters=24&view=FULL_LAYERS&requiredQuality=HIGH&exactQualityRequired=false&key=${key}`;
 
   console.log('SOLAR_API_KEY exists:', !!process.env.SOLAR_API_KEY);
   console.log('SOLAR_API_KEY length:', process.env.SOLAR_API_KEY?.length);
@@ -78,10 +78,14 @@ GeoImageService.solarAerialImageCapture = async (req, res, next) => {
   console.log(data)
   const rgbUrlWithKey = `${data.rgbUrl}&key=${process.env.SOLAR_API_KEY}`;
   const maskUrlWithKey = `${data.maskUrl}&key=${process.env.SOLAR_API_KEY}`;
+  const dsmURLWithKey = `${data.dsmUrl}&key=${process.env.SOLAR_API_KEY}`;
   
 
   console.log(rgbUrlWithKey)
-  console.log(maskUrlWithKey)
+  //console.log(maskUrlWithKey)
+  //console.log('break between rgb and dsmURL')
+   console.log(dsmURLWithKey)
+  //console.log(data.dsmUrl)
   console.log(res.locals.address)
 
 
