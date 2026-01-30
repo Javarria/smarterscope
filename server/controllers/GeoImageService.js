@@ -23,48 +23,79 @@ GeoImageService.getCoordinates = async (req, res, next) => {
   const { lat, lon } = data.results[0].position;
   const coordinates = [lat, lon];
 
+  res.locals.latLng = { "latitude" : lat , "longitude" : lon }
+
   res.locals.address = address;
   res.locals.coordinates = coordinates;
   res.locals.key = key;
 
-  console.log(res.locals.coordinates);
-
   return next();
 };
 
+
+GeoImageService.centerCoordinates = async (req, res, next) => {
+  //Define URL to buildingInsights API with coordinates of the property of address and NOT the actual structure
+  const buildingInsightsAPIUrl = `https://solar.googleapis.com/v1/buildingInsights:findClosest?key=${process.env.SOLAR_API_KEY}&location.latitude=${res.locals.latLng.latitude}&location.longitude=${res.locals.latLng.longitude}`;
+
+  // Send a GET request to the BuildingInsights API with coordinates of the property. The response will contain the coordinates of the CENTER of the roof.
+  const response = await fetch(buildingInsightsAPIUrl, {
+    method: "GET",
+  })
+  const data = await response.json()
+
+  //get data.center to get coordinates of center roof coordinates to pass coordinates into image capture and see new view 
+  //console.log(res.locals.coordinates)
+  //console.log(data.center.latitude)
+  //Center roof coordinates put into a variable
+  res.locals.centerRoofCoordinates = [data.center.latitude , data.center.longitude]
+  //console.log(res.locals.centerRoofCoordinates)
+  //console.log("WE ARE AT THE END OF THE MIDDLEWARE FUNCRION")
+
+  //const data = response
+  
+
+  next()
+}
+
+
+
+
+
+
+
+
+
 GeoImageService.solarAerialImageCapture = async (req, res, next) => {
-  // Add THIS first in your middleware:
-
-
 
   const key = process.env.SOLAR_API_KEY;
-  const latitude = res.locals.coordinates[0]
-  const longitude = res.locals.coordinates[1]
-  console.log("WE ARE INSIDE OF SOLAR AERIAL MIDDLEWARE")
-  console.log("WE HAVE LATITUDE HERE: " + latitude + " AND LONGITUDE HERE: " + longitude)
 
-  console.log('API SOLAR \\\\\\\ API SOLAR APIIIIIIII: ' + process.env.SOLAR_API_KEY)
+  var latitude = res.locals.centerRoofCoordinates[0]
+  var longitude = res.locals.centerRoofCoordinates[1]
+
+  //console.log(longitude)
+  //console.log(latitude)
+
+  //console.log('JUST RENDEERD COORDINATES FOR LAT AND LON')
+
+  //console.log('WE ARE LOOKING AT CENTERED LAT AND LON ///////////////////////////////////////////////////////////')
+
+
+  //console.log("WE ARE INSIDE OF SOLAR AERIAL MIDDLEWARE")
+  //console.log("WE HAVE LATITUDE HERE: " + latitude + " AND LONGITUDE HERE: " + longitude)
+
+  //console.log('API SOLAR \\\\\\\ API SOLAR APIIIIIIII: ' + process.env.SOLAR_API_KEY)
   
-  console.log('APIKEY ///////////////////////////////: ' + process.env.AZURE_MAPS_PRIMARY_KEY)
-
-  // const solarAPIURL = `https://solar.googleapis.com/v1/dataLayers:get` +
-  // `?location.latitude=${latitude}` +
-  // `&location.longitude=${longitude}` +
-  // `&radiusMeters=100` +
-  // `&view=FULL_LAYERS` +
-  // `&requiredQuality=HIGH` +
-  // `&exactQualityRequired=false` +
-  // `&pixelSizeMeters=0.5` +
-  // `&key=${key}`
+  //console.log('APIKEY ///////////////////////////////: ' + process.env.AZURE_MAPS_PRIMARY_KEY)
 
   const solarAPIURL = `https://solar.googleapis.com/v1/dataLayers:get?location.latitude=${latitude}&location.longitude=${longitude}&radiusMeters=24&view=FULL_LAYERS&requiredQuality=HIGH&exactQualityRequired=false&key=${key}`;
 
-  console.log('SOLAR_API_KEY exists:', !!process.env.SOLAR_API_KEY);
-  console.log('SOLAR_API_KEY length:', process.env.SOLAR_API_KEY?.length);
-  console.log('SOLAR_API_KEY first 10 chars:', process.env.SOLAR_API_KEY?.substring(0, 10));
-  console.log('Full URL being called:', solarAPIURL);
+  //console.log('SOLAR_API_KEY exists:', !!process.env.SOLAR_API_KEY);
+  //console.log('SOLAR_API_KEY length:', process.env.SOLAR_API_KEY?.length);
+  //console.log('SOLAR_API_KEY first 10 chars:', process.env.SOLAR_API_KEY?.substring(0, 10));
+  //console.log('Full URL being called:', solarAPIURL);
   console.log(res.locals.address)
  
+  console.log('WE ARE INSIDE OF SOLARAERIALIMAGECAPTURE/////////////////////')
 
   const response = await fetch(solarAPIURL, {
     method: "GET",
@@ -82,17 +113,15 @@ GeoImageService.solarAerialImageCapture = async (req, res, next) => {
   
 
   console.log(rgbUrlWithKey)
-  //console.log(maskUrlWithKey)
-  //console.log('break between rgb and dsmURL')
-   console.log(dsmURLWithKey)
-  //console.log(data.dsmUrl)
-  console.log(res.locals.address)
+
+  //console.log(res.locals.address)
 
 
   return next()
 }
 
-//`https://atlas.microsoft.com/map/static?api-version=2024-04-01&bbox=${bboxString}&zoom=19&tilesetId=microsoft.imagery&subscription-key=${res.locals.key}`;
+
+
 
 GeoImageService.parcelBoundryLookup = async (req, res, next) => {
   console.log("WE ARE INSIDE OF THE PARCELBOUNDRY LOOKUP MIDDLEWARE FUNCTION");
@@ -145,7 +174,7 @@ GeoImageService.parcelBoundryLookup = async (req, res, next) => {
 GeoImageService.captureImage = async (req, res, next) => {
 
   console.log("WE ARE INSIDE THE CAPTUREIMAGE MIDDLEWARE FUNCTION")
-  console.log("THIS IS THE API KEY: " + res.locals.key);
+  console.log("THIS IS THE API KEY: " + process.env.SOLAR_API_KEY);
   //console.log("THIS IS THE BBOX: " + JSON.stringify(res.locals.bbox))
 
   //Destructuring res.locals.bbox to pass it to API in acceptable STRING format.

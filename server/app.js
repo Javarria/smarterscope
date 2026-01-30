@@ -38,7 +38,7 @@ app.get("/", (req, res) => {
   res.send("Server Running");
 });
 
-app.post("/generateScopeSheet", GeoImageService.getCoordinates, GeoImageService.solarAerialImageCapture, (req, res) => {
+app.post("/generateScopeSheet",  GeoImageService.getCoordinates, GeoImageService.centerCoordinates, GeoImageService.solarAerialImageCapture,  (req, res) => {
   
 
   //OLD MIDDLEWARE FUNCTONS FOR /GENERATESCOPESHEET : GeoImageService.getCoordinates,GeoImageService.parcelBoundryLookup, GeoImageService.captureImage,
