@@ -72,22 +72,8 @@ GeoImageService.solarAerialImageCapture = async (req, res, next) => {
   var latitude = res.locals.centerRoofCoordinates[0]
   var longitude = res.locals.centerRoofCoordinates[1]
 
-  //console.log(longitude)
-  //console.log(latitude)
 
-  //console.log('JUST RENDEERD COORDINATES FOR LAT AND LON')
-
-  //console.log('WE ARE LOOKING AT CENTERED LAT AND LON ///////////////////////////////////////////////////////////')
-
-
-  //console.log("WE ARE INSIDE OF SOLAR AERIAL MIDDLEWARE")
-  //console.log("WE HAVE LATITUDE HERE: " + latitude + " AND LONGITUDE HERE: " + longitude)
-
-  //console.log('API SOLAR \\\\\\\ API SOLAR APIIIIIIII: ' + process.env.SOLAR_API_KEY)
-  
-  //console.log('APIKEY ///////////////////////////////: ' + process.env.AZURE_MAPS_PRIMARY_KEY)
-
-  const solarAPIURL = `https://solar.googleapis.com/v1/dataLayers:get?location.latitude=${latitude}&location.longitude=${longitude}&radiusMeters=24&view=FULL_LAYERS&requiredQuality=HIGH&exactQualityRequired=false&key=${key}`;
+  const solarAPIURL = `https://solar.googleapis.com/v1/dataLayers:get?location.latitude=${latitude}&location.longitude=${longitude}&radiusMeters=18&view=FULL_LAYERS&requiredQuality=HIGH&exactQualityRequired=false&key=${key}`;
 
   //console.log('SOLAR_API_KEY exists:', !!process.env.SOLAR_API_KEY);
   //console.log('SOLAR_API_KEY length:', process.env.SOLAR_API_KEY?.length);
@@ -95,7 +81,7 @@ GeoImageService.solarAerialImageCapture = async (req, res, next) => {
   //console.log('Full URL being called:', solarAPIURL);
   console.log(res.locals.address)
  
-  console.log('WE ARE INSIDE OF SOLARAERIALIMAGECAPTURE/////////////////////')
+  console.log('WE ARE INSIDE OF SOLAR AERIAL IMAGE CAPTURE')
 
   const response = await fetch(solarAPIURL, {
     method: "GET",

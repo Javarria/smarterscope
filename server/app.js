@@ -15,8 +15,6 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-// PRIMARYKEY > pP3YeszNpgkA0lmKbyOUUPR72WmweQXVqaOoMaBeipNAFUOz0HmsJQQJ99BLACYeBjFoSBy6AAAgAZMPF2Rf
-
 /////////////*************** TO RUN SERVER => node app.js *****************//////////////
 // CORS (Cross-Origin Resource Sharing) to allow requests from client-side JavaScript
 // running on a different origin (domain, protocol, or port) than the server.
@@ -38,9 +36,8 @@ app.get("/", (req, res) => {
   res.send("Server Running");
 });
 
-app.post("/generateScopeSheet",  GeoImageService.getCoordinates, GeoImageService.centerCoordinates, GeoImageService.solarAerialImageCapture,  (req, res) => {
+app.post("/generateScopeSheet",  GeoImageService.getCoordinates,GeoImageService.centerCoordinates, GeoImageService.solarAerialImageCapture,  (req, res) => {
   
-
   //OLD MIDDLEWARE FUNCTONS FOR /GENERATESCOPESHEET : GeoImageService.getCoordinates,GeoImageService.parcelBoundryLookup, GeoImageService.captureImage,
   //console.log("The address we are using for the LM to gather diagram is: " + req.body.address )
   res.json({ message: "You've hit the /generateScopeSheet endpoint with this address: " + req.body.address });
