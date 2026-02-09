@@ -36,7 +36,7 @@ app.get("/", (req, res) => {
   res.send("Server Running");
 });
 
-app.post("/generateScopeSheet",  GeoImageService.getCoordinates,GeoImageService.centerCoordinates, GeoImageService.solarAerialImageCapture,  (req, res) => {
+app.post("/generateScopeSheet",  GeoImageService.getCoordinates,GeoImageService.centerCoordinates, GeoImageService.solarAerialImageCapture,GeoImageService.geoTiffURLToPngBuffer,LLMPromptService.promptImageForSketch, (req, res) => {
   
   //OLD MIDDLEWARE FUNCTONS FOR /GENERATESCOPESHEET : GeoImageService.getCoordinates,GeoImageService.parcelBoundryLookup, GeoImageService.captureImage,
   //console.log("The address we are using for the LM to gather diagram is: " + req.body.address )

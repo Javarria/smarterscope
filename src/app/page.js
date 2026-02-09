@@ -17,6 +17,7 @@ export default function Home() {
     </div>   
     {/* HEADER CONTAINER / BEGGINING OF PAGE */}
         <Header/>
+      
         <MainHomePageBody/>
 
     

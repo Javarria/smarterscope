@@ -10,6 +10,7 @@
     "backend": "nodemon server/app.js"
   },
   "dependencies": {
+    "clipboardy": "^5.2.1",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
@@ -19,6 +20,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-router-dom": "^7.9.6",
+    "sharp": "^0.34.5",
     "three": "^0.181.1"
   },
   "devDependencies": {

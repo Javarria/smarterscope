@@ -1,3 +1,6 @@
+import next from "next";
+import sharp from "sharp";
+
 const GeoImageService = () => {};
 
 //Calls function to API for turning address into coordinates = [lat, lon]
@@ -81,13 +84,49 @@ GeoImageService.solarAerialImageCapture = async (req, res, next) => {
   const maskUrlWithKey = `${data.maskUrl}&key=${process.env.SOLAR_API_KEY}`;
   const dsmURLWithKey = `${data.dsmUrl}&key=${process.env.SOLAR_API_KEY}`;
 
-  console.log(rgbUrlWithKey);
+  //console.log(rgbUrlWithKey);
+  res.locals.geoTiff = rgbUrlWithKey
 
   //console.log(res.locals.address)
 
   return next();
 };
 
+//FUNCTION TO TURN GEOTIFF URL INTO PNG SO THE AERIAL IMAGE CAN BE DIGESTED BY LLM
+GeoImageService.geoTiffURLToPngBuffer = async (req, res, next) => {
+
+  // geoTiffURL Returned From Google API Stored In Res.Locals
+  const geoTiffBuffer = res.locals.geoTiff 
+  console.log(geoTiffBuffer)
+  // Send a network request to download the image data from the provided Google URL
+  const response = await fetch(geoTiffBuffer)
+  console.log(response.status)
+  
+  // Downloads the raw binary data of the image into a temporary memory slot
+  const arrayBuffer = await response.arrayBuffer()
+  
+  // Converts that raw data into a Node.js 'Buffer' format that Sharp can read
+  const inputBuffer = Buffer.from(arrayBuffer)
+
+  console.log(arrayBuffer)
+  
+  // Convert raw image data (GeoTIFF) into a standard PNG buffer for the LLM
+  res.locals.pngBuffer = await sharp(inputBuffer).png().toBuffer()
+  
+  console.log(res.locals.pngBuffer)
+  // Turn the image file into a text string so we can transmit it to the ChatGPT API
+  const base64Image = res.locals.pngBuffer.toString('base64');
+  
+  //const imageBuffer = Buffer.from(base64, 'base64')
+  console.log("LINE AFTER IMAGE BUFFER LINE")
+  
+  //res.locals.imageBuffer = imageBuffer 
+
+
+  res.locals.b64 = base64Image
+
+  next()
+}
 
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,6 +135,13 @@ GeoImageService.solarAerialImageCapture = async (req, res, next) => {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////***** FUNCTIONS BELOW ARE NOT ESSENTIAL TO AERIAL IMAGE CALCULATIONS OR CAPTURE*****//////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////***** FUNCTIONS BELOW ARE NOT ESSENTIAL TO AERIAL IMAGE CALCULATIONS OR CAPTURE*****//////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////***** FUNCTIONS BELOW ARE NOT ESSENTIAL TO AERIAL IMAGE CALCULATIONS OR CAPTURE*****//////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 
@@ -146,8 +192,8 @@ GeoImageService.parcelBoundryLookup = async (req, res, next) => {
   next();
 };
 
-// &titlesetId={micrisoft.imagery} parameter allows for satelite images
 
+//AZURE Image capture middleware function
 GeoImageService.captureImage = async (req, res, next) => {
   console.log("WE ARE INSIDE THE CAPTUREIMAGE MIDDLEWARE FUNCTION");
   console.log("THIS IS THE API KEY: " + process.env.SOLAR_API_KEY);
@@ -160,36 +206,27 @@ GeoImageService.captureImage = async (req, res, next) => {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////***** NEXT STEP: ADD PADDING TO BBOX *****///////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //ZOOM CHANGED TO 18
   const captureURL = `https://atlas.microsoft.com/map/static?api-version=2024-04-01&bbox=${bboxString}&zoom=19&tilesetId=microsoft.imagery&subscription-key=${res.locals.key}`;
 
   const response = await fetch(captureURL, {
     method: "GET",
   });
 
-  //console.log(response.body);
   const image = await response.url;
   const imageBytes = await response.arrayBuffer();
 
   const base64Image = Buffer.from(imageBytes).toString("base64");
 
-  //console.log(buffer)
-  //console.log(base64Image)
-
-  //console.log(image + " THIS IS THE LINE THAT LOGS THE URL OF THE RESPONSE")
   res.locals.base64 = base64Image;
   res.locals.image = image;
 
   console.log("THIS IS RES.LOCALS.IMAGE: " + res.locals.image);
   console.log(res.locals.bbox);
   console.log(bboxString);
-  //console.log(res.locals.address)
 
   return next();
 
-  // const buffer = await image.arrayBuffer();
 };
 
 export default GeoImageService;
 
-// console.log(data.parcels.features[0].geometry.coordinates);
