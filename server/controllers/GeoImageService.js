@@ -102,28 +102,37 @@ GeoImageService.geoTiffURLToPngBuffer = async (req, res, next) => {
   const response = await fetch(geoTiffBuffer)
   console.log(response.status)
   
-  // Downloads the raw binary data of the image into a temporary memory slot
+  // Downloads the raw binary data // Raw binary → ArrayBuffer
   const arrayBuffer = await response.arrayBuffer()
   
-  // Converts that raw data into a Node.js 'Buffer' format that Sharp can read
+  // Converts that raw data into a Node.js 'Buffer' format that Sharp can read // ArrayBuffer → Node Buffer (for Sharp)
   const inputBuffer = Buffer.from(arrayBuffer)
 
-  console.log(arrayBuffer)
-  
-  // Convert raw image data (GeoTIFF) into a standard PNG buffer for the LLM
+  //THIS IS THE BINARY CODE OF THE GEOTIFF IMAGE NOT THE PNG PHOTO
+  // res.locals.imageBuffer = arrayBuffer
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  // Convert raw image data (GeoTIFF) into a standard PNG buffer for the LLM 
   res.locals.pngBuffer = await sharp(inputBuffer).png().toBuffer()
   
   console.log(res.locals.pngBuffer)
-  // Turn the image file into a text string so we can transmit it to the ChatGPT API
-  const base64Image = res.locals.pngBuffer.toString('base64');
+   // Turn the image file into a text string so we can transmit it to the ChatGPT API
+  //const base64Image = res.locals.pngBuffer.toString('base64');
+
+  res.locals.fileOfImageBuffer = new File(
+    [res.locals.pngBuffer],
+    "roof.png",
+    { type: "image/png" }
+  );
+
   
   //const imageBuffer = Buffer.from(base64, 'base64')
   console.log("LINE AFTER IMAGE BUFFER LINE")
+
+  res.locals.dataUrl = `data:image/png;base64,${res.locals.pngBuffer.toString("base64")}`;
   
   //res.locals.imageBuffer = imageBuffer 
-
-
-  res.locals.b64 = base64Image
+  //res.locals.b64 = base64Image
 
   next()
 }

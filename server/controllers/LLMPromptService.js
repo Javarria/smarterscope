@@ -1,9 +1,14 @@
 import OpenAI from "openai";
 import dotenv from 'dotenv'
+import fs from 'fs'
 import clipboardy from 'clipboardy'
 dotenv.config()
 const client = new OpenAI();
 
+// const upload = await client.fules.create({
+//     file: res.locals.imageBuffer ,
+//     purpose: "vision "
+// })
 const LLMPromptService = () => {}
 
 LLMPromptService.promptImageForSketch = async(req,res,next) => {
@@ -14,7 +19,7 @@ LLMPromptService.promptImageForSketch = async(req,res,next) => {
     //console.log(res.locals.b64)
     //console.log("AFTER B64")
 
-    clipboardy.writeSync(`data:image/png;base64,${res.locals.b64}`);
+   //clipboardy.writeSync(`data:image/png;base64,${res.locals.b64}`);
     //let URLToImageOfRoof = res.locals.image
     // if (!URLToImageOfRoof.ok) {
     //     throw new Error("Failed to fetch image");
@@ -50,22 +55,38 @@ LLMPromptService.promptImageForSketch = async(req,res,next) => {
 
 
 
-    const response = await client.chat.completions.create({
+    const upload = await client.files.create({
+        file: res.locals.fileOfImageBuffer,
+        purpose: "vision"
+    })
+    console.log("upload.id")
+    console.log(upload)
+
+    console.log("dataUrl type:", typeof res.locals.dataUrl);
+    console.log("dataUrl starts:", res.locals.dataUrl?.slice(0, 40));
+    console.log("dataUrl length:", res.locals.dataUrl?.length);
+
+    //TEST TO SEE IF IMAGE IS VISIBLE (CONFIRMED)
+//  const b64 = res.locals.dataUrl.replace(/^data:image\/png;base64,/, "");
+//fs.writeFileSync("debug-roof.png", Buffer.from(b64, "base64"));
+//console.log("Wrote debug-roof.png");
+
+// const response = await client.chat.completions.create({   <<< TESTING THE REMOVAL OF .completions to .responses >>>  const response = await client.responses.create({
+        
+    const response = await client.chat.completions.create({ 
         model: "gpt-4o", // gpt-4o is the standard flagship vision model
-        messages: [
+        //Input was messages
+        input: [
             {
                 role: "user",
                 content: [
                     {
                         type: "text",
                         text: "I have provided an aerial image of a roof. Please identify the Ridges, Hips, Valleys, Eaves, and Rakes. Instead of describing them, output a raw SVG code block that draws a thin black line wireframe of these components on a white background. Output ONLY the SVG code."
-                    },
-                    {
-                        type: "image_url",
-                        image_url: {
-                            url: `data:image/png;base64,${res.locals.imageBuffer}`
-                        }
-                    }
+                    },{ 
+                        type: "image_url", 
+                        image_url: { url: res.locals.dataUrl } 
+                    }   
                 ]
             }
         ],
@@ -73,9 +94,16 @@ LLMPromptService.promptImageForSketch = async(req,res,next) => {
        // tools: [{ type: "image_generation" }] 
     });
     
-        console.log("BEFORE------ B64 LOG")
-       console.log(res.locals.b64)
-       console.log("AFTER------- B64 LOG")
+  
+    // IMAGE FILE ATTEMPT TO GET GPT TO READ MY IMAGE WITH A FILE AND NOT IMAGE:URL CAUSED 400 ERR 
+    // {
+    //     type: "image_file",
+    //     image_file: {
+    //         file_id: upload.id,
+    //         filename: "roof.png"
+    //     }
+    // }
+
 
        console.log(response.choices[0].message.content);
 
