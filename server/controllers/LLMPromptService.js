@@ -13,47 +13,9 @@ const LLMPromptService = () => {}
 
 LLMPromptService.promptImageForSketch = async(req,res,next) => {
 
-    // console.log(res.locals.base64 +   " : THIS IS INSIDE PROMPTIMAGEFORSKETCH IT IS THE BASE64")
-
-    //console.log("WE ARE INSIDE OF PROMPTIMAGEFORSKETCH...")
-    //console.log(res.locals.b64)
-    //console.log("AFTER B64")
-
-   //clipboardy.writeSync(`data:image/png;base64,${res.locals.b64}`);
-    //let URLToImageOfRoof = res.locals.image
-    // if (!URLToImageOfRoof.ok) {
-    //     throw new Error("Failed to fetch image");
-    //   }
-
+    console.log("WE ARE INSIDE OF PROMPTIMAGEFORSKETCH...")
     
-    // !!!   data:image/png;base64,PASTE_YOUR_BASE64_STRING_HERE  !!!
-    // 1.That prefix is not optional. It tells the model:
-    // 2.this is an image
-    // 3.this is a PNG
-    // 4.this is base64 encoded
-    // 5.Without it, the model treats it like random text and gets confused.
-
-
-    // const response = await client.responses.create({
-    //     model: "gpt-5-nano",
-    //     input: [
-    //         {
-    //           role: "user",
-    //           content: [
-    //             {
-    //               type: "input_text",
-    //               text: `CREATE an image of a wireframe of the aerial image provided. make all the lines thin black lines. make the ridge,Hips,Valleys,Eaves and rakes black lines and return that wireframe image`
-    //             },
-    //             {
-    //               type: "input_image",
-    //               image_url: `data:image/png;base64,${res.locals.b64}`
-    //             }
-    //           ]
-    //         }
-    //       ]
-    // });
-
-
+    // data:image/png;base64,PASTE_YOUR_BASE64_STRING_HERE !! 1.That prefix is not optional. It tells the model:this is an image this is a PNG this is base64 encoded Without it, the model treats it like random text and gets confused.
 
     const upload = await client.files.create({
         file: res.locals.fileOfImageBuffer,
@@ -66,56 +28,66 @@ LLMPromptService.promptImageForSketch = async(req,res,next) => {
     console.log("dataUrl starts:", res.locals.dataUrl?.slice(0, 40));
     console.log("dataUrl length:", res.locals.dataUrl?.length);
 
-    //TEST TO SEE IF IMAGE IS VISIBLE (CONFIRMED)
-//  const b64 = res.locals.dataUrl.replace(/^data:image\/png;base64,/, "");
-//fs.writeFileSync("debug-roof.png", Buffer.from(b64, "base64"));
-//console.log("Wrote debug-roof.png");
-
-// const response = await client.chat.completions.create({   <<< TESTING THE REMOVAL OF .completions to .responses >>>  const response = await client.responses.create({
-        
-    const response = await client.chat.completions.create({ 
-        model: "gpt-4o", // gpt-4o is the standard flagship vision model
+   
+try{   
+    const response = await client.responses.create({ 
+        model: "gpt-4.1", // gpt-4o is the standard flagship vision model
         //Input was messages
         input: [
             {
-                role: "user",
-                content: [
-                    {
-                        type: "text",
-                        text: "I have provided an aerial image of a roof. Please identify the Ridges, Hips, Valleys, Eaves, and Rakes. Instead of describing them, output a raw SVG code block that draws a thin black line wireframe of these components on a white background. Output ONLY the SVG code."
-                    },{ 
-                        type: "image_url", 
-                        image_url: { url: res.locals.dataUrl } 
-                    }   
-                ]
-            }
-        ],
-        // Optional: If you want ChatGPT to actually trigger DALL-E to make a new file
-       // tools: [{ type: "image_generation" }] 
-    });
+              role: "developer",
+              content: [
+                {
+                  type: "input_text",
+                  text: `
+    You are a vision system.
+    You must output ONLY raw SVG.
+    No markdown. No explanations.
+    If you cannot read the image, output exactly:
+    ERROR: unreadable image
+                  `.trim(),
+                },
+              ],
+            },
+            {
+              role: "user",
+              content: [
+                {
+                  type: "input_text",
+                  text: `
+    Return a black and white aerial wireframe
     
   
-    // IMAGE FILE ATTEMPT TO GET GPT TO READ MY IMAGE WITH A FILE AND NOT IMAGE:URL CAUSED 400 ERR 
-    // {
-    //     type: "image_file",
-    //     image_file: {
-    //         file_id: upload.id,
-    //         filename: "roof.png"
-    //     }
-    // }
+                  `.trim(),
+                },
+                {
+                  type: "input_image",
+                  image_url: res.locals.dataUrl,
+                  detail: "high",
+                },
+              ],
+            },
+          ],
+          temperature: 0,
+          max_output_tokens: 2500,
+        });
 
+        res.locals.wireframeSvg = response.output_text?.trim();
 
-       console.log(response.choices[0].message.content);
+        fs.writeFileSync("wireframe.svg", res.locals.wireframeSvg)
+        console.log(res.locals.wireframeSvg)
+        console.log('WE ARE AT THE END OF THE QUERT')
+        next();
+      }catch (err) {
+        console.error(err);
+        res.locals.wireframeSvg = "ERROR: model request failed";
+        next();
+      }
+    }
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    
 
     
-    // ${URLToImageOfRoof}
-    next()
-}
 
 export default LLMPromptService;
-
-
-
-
-
 
