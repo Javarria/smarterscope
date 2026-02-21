@@ -54,7 +54,7 @@ The result is a faster, more reliable workflow that allows adjusters to focus on
 ## 🏗️ Tech Overview
 
 - **Frontend:** Modern JavaScript framework (React / Next.js)
-- **Backend:** Node.js + API services
+- **Backend:** Node.js + API services (Google Solar API, REGRID API ETC...)
 - **Geolocation:** Mapping and address-based lookup services
 - **AI:** Image analysis and structured output generation
 - **Infrastructure:** Cloud-based, scalable architecture
