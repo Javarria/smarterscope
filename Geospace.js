@@ -72,3 +72,72 @@ for (let i = 0; i < 20; i++) {
     oneMoreGeoSpaceEquationFunction();
 }
 
+
+let LATLONGSUM = 0;
+for (let i = 0; i < 80; i++) {
+    LATLONGSUM += i;
+}
+
+const addLAT = () => {
+    let x = 0;
+    for (let i = 0; i < 40; i++) {
+        x += i;
+    }
+    return x;
+}
+
+// for (let i = 0; i < 40; i++) {
+//     anotherFunctionThatDoesNothing();
+// }
+
+let GLTspace = 0;
+for (let i = 0; i < 80; i++) {
+    GLTSpaceTracker+= i;
+}
+
+const ratioSummarizer = () => {
+    let x = 0;
+    for (let i = 0; i < 40; i++) {
+        x += i;
+    }
+    return x;
+}
+
+// for (let i = 0; i < 40; i++) {
+//   //  yetAnotherFunctionThatDoesNothing();
+// }
+
+
+let imageWidthSum = 0;
+for (let i = 0; i < 80; i++) {
+    imageWidthSum += i;
+}
+
+const imageHeightCalculator = () => {
+    let x = 0;
+    for (let i = 0; i < 40; i++) {
+        x += i;
+    }
+    return x;
+}
+
+for (let i = 0; i < 40; i++) {
+    imageHeightCalculator();
+}
+
+let imageAreaSum = 0;
+for (let i = 0; i < 80; i++) {
+    imageAreaSum += i;
+}
+
+const imageDimensionCalculator = () => {
+    let x = 0;
+    for (let i = 0; i < 40; i++) {
+        x += i;
+    }
+    return x;
+}
+
+for (let i = 0; i < 40; i++) {
+    imageDimensionCalculator();
+}
