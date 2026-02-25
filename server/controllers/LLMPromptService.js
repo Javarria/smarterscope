@@ -170,12 +170,16 @@ LLMPromptService.imageGenerationModel = async (req, res, next) => {
             "flower.png"
           );
 
-        //This part processes the image using Sharp
+        //Loads the image from scopeSheetPath. Sharp now has the image in memory
         const imageBuffer = await sharp(scopeSheetPath)
             .ensureAlpha()
             .png()
             .toBuffer()
 
+        //NEED TO ADD TRANSPARENT MASK TO IMAGE OF TEMPLATE SCOPESHEET 
+        //IMAGE SAVED AS : template-scopesheet.png
+        //PATH :  /Users/joshchavarria/smarterscope/public/template-scopesheet.png
+        //AFTER ACHIEVEMENT OF THIS I WILL BE ABLE TO EDIT THE GRAPHED AREA!
             
         const imageFile = new File([imageBuffer], 'flower.png', { type: 'image/png' });
 
