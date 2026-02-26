@@ -167,7 +167,7 @@ LLMPromptService.imageGenerationModel = async (req, res, next) => {
         const scopeSheetPath = path.join(
             process.cwd(),
             "public",
-            "flower.png"
+            "template-scopesheet.png"
           );
 
         //Loads the image from scopeSheetPath. Sharp now has the image in memory
@@ -181,11 +181,12 @@ LLMPromptService.imageGenerationModel = async (req, res, next) => {
         //PATH :  /Users/joshchavarria/smarterscope/public/template-scopesheet.png
         //AFTER ACHIEVEMENT OF THIS I WILL BE ABLE TO EDIT THE GRAPHED AREA!
             
-        const imageFile = new File([imageBuffer], 'flower.png', { type: 'image/png' });
+        const imageFile = new File([imageBuffer], 'template-scopesheet.png', { type: 'image/png' });
 
         const response = await client.images.edit({
             model: "dall-e-2",
             image:  imageFile,
+            //mask: maskFile,
             prompt: "change the background behing the red flower to black. ",
             size: "1024x1024",
             response_format: "b64_json"
