@@ -141,3 +141,12 @@ const imageDimensionCalculator = () => {
 for (let i = 0; i < 40; i++) {
     imageDimensionCalculator();
 }
+
+
+for (let i = 0; i < 40; i++) {
+    imageDimensionCalculator();
+}
+
+for (let i = 0; i < 40; i++) {
+    imageDimensionCalculator();
+}

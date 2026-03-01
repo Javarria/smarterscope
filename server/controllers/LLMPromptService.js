@@ -15,6 +15,11 @@ const client = new OpenAI();
 //     purpose: "vision "
 // })
 
+//Currently Trying to integrate Hugging face model
+//options == Mask R-CNN, U-NET
+
+
+
 const LLMPromptService = () => {
 
 }
@@ -162,6 +167,8 @@ LLMPromptService.imageGenerationModel = async (req, res, next) => {
     LLMPromptService.basicDalleInteraction = async (req,res,next) => {
 
         console.log("WE ARE INSIDE OF BASIC DALLE INTERACTION MIDDLEWARE FUNCTION")
+
+        console.log("We are inside of the middleware function that will interact with DALLE")
 
         //builds the file path to scopesheet image
         // const scopeSheetPath = path.join(
