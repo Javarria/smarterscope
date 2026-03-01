@@ -164,14 +164,37 @@ LLMPromptService.imageGenerationModel = async (req, res, next) => {
         console.log("WE ARE INSIDE OF BASIC DALLE INTERACTION MIDDLEWARE FUNCTION")
 
         //builds the file path to scopesheet image
-        const scopeSheetPath = path.join(
+        // const scopeSheetPath = path.join(
+        //     process.cwd(),
+        //     "public",
+        //     "template-scopesheet.png"
+        //   )
+
+          const transparentScopeSheetPath = path.join(
             process.cwd(),
             "public",
-            "template-scopesheet.png"
+            "transparent-scopesheet.png"
           );
 
-        //Loads the image from scopeSheetPath. Sharp now has the image in memory
-        const imageBuffer = await sharp(scopeSheetPath)
+          const aerialTestImagePath = path.join(
+            process.cwd(),
+            "public",
+            "aerial-test-image.png"
+          );
+          
+        //Loads the image from scopeSheetPath. Sharp now has the image in memory (RETURNS A RAW BINARY BUFFER) Result = the image as binary data in memory.
+        // const imageBuffer = await sharp(scopeSheetPath)
+        //     .ensureAlpha()
+        //     .png()
+        //     .toBuffer()
+
+        
+        const transparentScopeBuffer = await sharp(transparentScopeSheetPath)
+            .ensureAlpha()
+            .png()
+            .toBuffer()
+
+        const aerialTestImageBuffer = await sharp(aerialTestImagePath)
             .ensureAlpha()
             .png()
             .toBuffer()
@@ -181,13 +204,27 @@ LLMPromptService.imageGenerationModel = async (req, res, next) => {
         //PATH :  /Users/joshchavarria/smarterscope/public/template-scopesheet.png
         //AFTER ACHIEVEMENT OF THIS I WILL BE ABLE TO EDIT THE GRAPHED AREA!
             
-        const imageFile = new File([imageBuffer], 'template-scopesheet.png', { type: 'image/png' });
+        // Wraps your raw buffer into a File object so the OpenAI SDK can treat it like an uploaded image.
+        //const imageFile = new File([imageBuffer], 'template-scopesheet.png', { type: 'image/png' });
+
+        const maskFile = new File([transparentScopeBuffer], 'transparent-scopesheet.png', { type: 'image/png' });
+
+        const aerialFile = new File([aerialTestImageBuffer], 'aerial-test-image.png', { type: 'image/png' });
 
         const response = await client.images.edit({
             model: "dall-e-2",
-            image:  imageFile,
+            prompt: `Analyze the roof structure in the provided aerial image and extract only the structural geometry.
+            Remove all textures, shingles, shadows, trees, ground, driveway, and surrounding objects.
+            Identify all roof planes, ridgelines, hips, valleys, rake edges, and eave boundaries.
+            Convert the structure into a clean 2D orthographic top-down architectural wireframe.
+            Represent each roof plane as a flat geometric polygon.
+            Draw thin, precise black vector-style lines on a pure white background.
+            No shading, no gradients, no color, no realism, no perspective distortion.
+            Maintain accurate proportions and alignment from the original image.
+            Ensure every ridge and valley is represented by a single continuous line.
+            Output should resemble a professional roofing measurement schematic.`,
+            image:  aerialFile,
             //mask: maskFile,
-            prompt: "change the background behing the red flower to black. ",
             size: "1024x1024",
             response_format: "b64_json"
             
