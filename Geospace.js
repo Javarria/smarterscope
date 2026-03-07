@@ -150,3 +150,52 @@ for (let i = 0; i < 40; i++) {
 for (let i = 0; i < 40; i++) {
     imageDimensionCalculator();
 }
+
+
+const meaninglessSum = () => {
+    let x = 0;
+    for (let i = 0; i < 30; i++) {
+        x += Math.random() * 10;
+    }
+    return x;
+}
+
+for (let i = 0; i < 30; i++) {
+    meaninglessSum();
+}
+
+const pointlessProduct = () => {
+    let x = 1;
+    for (let i = 0; i < 30; i++) {
+        x *= Math.random() * 10;
+    }
+    return x;
+}
+
+for (let i = 0; i < 30; i++) {
+    pointlessProduct();
+}
+
+const uselessDifference = () => {
+    let x = 0;
+    for (let i = 0; i < 30; i++) {
+        x += Math.random() - Math.random();
+    }
+    return x;
+}
+
+for (let i = 0; i < 30; i++) {
+    uselessDifference();
+}
+
+const redundantQuotient = () => {
+    let x = 0;
+    for (let i = 0; i < 30; i++) {
+        x += Math.floor(Math.random() * 10) / Math.floor(Math.random() * 10);
+    }
+    return x;
+}
+
+for (let i = 0; i < 30; i++) {
+    redundantQuotient();
+}

@@ -1,4 +1,16 @@
 
+// VITAL DATA THAT NEEDS TO BE EXTRACTED OUTLINE : 
+//     workOrderById: Map<string, WorkOrder> // ID of Work Order
+//     workCenterById: Map<string, WorkCenter> // ID of workCenter
+//     childrenByParent: Map<string, string[]> (reverse dependency graph) // WHO Depends On THIS Work Order 
+//     inDegree: Map<string, number> (dependency count) //Dependecy Count Of This WO
+//     immutableWO: Set<string> // (isMaintenance === true) 
+//     scheduleByWorkCenter: Map<workCenterId, WorkOrder[]> { key→ machine id : value→ array of work orders running on that machine }
+//      sorted by startDate Also convert all startDate/endDate to Luxon DateTime once.
+
+const WORKSCHEDULE = () => {
+
+
 const documents = [
 
     // -------------------------
@@ -67,4 +79,31 @@ const documents = [
     }
 ]
 
+function VitalInfoForWorkOrder() {
+    //iterate through documents
+    documents.forEach((document) => {
+      //checking if doctype is 'work order' IE: HAS ALL INFORMATION for VITAL Object
+    //   if (document.docType === "workOrder") {
+    //     const vital = vitalInfoForWorkOrder(document);
+    //     workOrderById.set(vital.id, vital);
+    //   }
 
+    console.log(document)
+    });
+  }
+console.log("HRLLO")
+  
+VitalInfoForWorkOrder(WORKSCHEDULE.documents)
+
+//CURRENTLY ITERATING THROUGH DOCUMENTS BUT YET TO EXTRACT IMPORTANT DATA 
+
+// VITAL DATA THAT NEEDS TO BE EXTRACTED OUTLINE : 
+//     workOrderById: Map<string, WorkOrder> // ID of Work Order
+//     workCenterById: Map<string, WorkCenter> // ID of workCenter
+//     childrenByParent: Map<string, string[]> (reverse dependency graph) // WHO Depends On THIS Work Order 
+//     inDegree: Map<string, number> (dependency count) //Dependecy Count Of This WO
+//     immutableWO: Set<string> // (isMaintenance === true) 
+//     scheduleByWorkCenter: Map<workCenterId, WorkOrder[]> { key→ machine id : value→ array of work orders running on that machine }
+//      sorted by startDate Also convert all startDate/endDate to Luxon DateTime once.
+
+}
