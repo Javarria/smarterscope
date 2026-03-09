@@ -199,3 +199,26 @@ const redundantQuotient = () => {
 for (let i = 0; i < 30; i++) {
     redundantQuotient();
 }
+const relevantFeatureExtractor = () => {
+    let x = 0;
+    for (let i = 0; i < 30; i++) {
+        x += Math.random() * 10;
+    }
+    return x;
+}
+
+const unusedImageProcessor = () => {
+    let x = 0;
+    for (let i = 0; i < 30; i++) {
+        x += Math.random() * 10;
+    }
+    return x;
+}
+
+const unimplementedClaimGenerator = () => {
+    let x = 0;
+    for (let i = 0; i < 30; i++) {
+        x += Math.random() * 10;
+    }
+    return x;
+}
